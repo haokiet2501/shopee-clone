@@ -4,8 +4,8 @@ export default function Login() {
   return (
     <div className='bg-bg-pattern'>
       <div className='h-[700px] bg-banner-pattern bg-contain bg-center bg-no-repeat object-cover'>
-        <div className='mx-auto max-w-7xl px-4'>
-          <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-32 lg:pr-10'>
+        <div className='container'>
+          <div className='grid grid-cols-1 py-12 pt-36 lg:grid-cols-5 lg:pr-10'>
             <div className='lg:col-span-2 lg:col-start-4'>
               <form className='rounded bg-white p-10 shadow-md'>
                 <div className='text-2xl'>Đăng nhập</div>
