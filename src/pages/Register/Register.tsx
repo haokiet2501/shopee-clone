@@ -1,8 +1,11 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { yupResolver } from '@hookform/resolvers/yup'
-import Input from 'src/components/Input'
 import { schema, Schema } from 'src/utils/rules'
+import { useMutation } from '@tanstack/react-query'
+import Input from 'src/components/Input'
+import { registerAccount } from 'src/apis/auth.api'
+import { omit } from 'lodash'
 
 type FormData = Schema
 
@@ -13,8 +16,17 @@ export default function Register() {
     formState: { errors }
   } = useForm<FormData>({ resolver: yupResolver(schema) })
 
+  const registerAccMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+  })
+
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    const body = omit(data, ['confirm_password'])
+    registerAccMutation.mutate(body, {
+      onSuccess: (data) => {
+        console.log(data)
+      }
+    })
   })
   return (
     <div className='bg-bg-pattern'>
