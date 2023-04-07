@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query'
 import Input from 'src/components/Input'
 import { registerAccount } from 'src/apis/auth.api'
 import { omit } from 'lodash'
-import { isAxiosUnprocessableEntityError } from 'src/utils/utild'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ResponseApi } from 'src/types/utils.type'
 
 type FormData = Schema
