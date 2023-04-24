@@ -11,12 +11,13 @@ import Input from 'src/components/Input'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
+import path from 'src/constants/path'
 
 type FormData = Omit<Schema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
   const {
     register,
@@ -32,8 +33,9 @@ export default function Login() {
 
   const onSubmit = handleSubmit((data) => {
     loginAccMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/')
       },
       onError: (error) => {
@@ -84,14 +86,14 @@ export default function Login() {
                   <Button
                     isLoading={loginAccMutation.isLoading}
                     disabled={loginAccMutation.isLoading}
-                    className='hover:text-bg-600 flex w-full items-center justify-center bg-red-500 px-2 py-4 text-sm uppercase text-white disabled:opacity-80'
+                    className='hover:text-bg-600 flex w-full items-center justify-center bg-red-600 px-2 py-4 text-sm uppercase text-white disabled:opacity-80'
                   >
                     Đăng nhập
                   </Button>
                 </div>
                 <div className='mt-8 flex items-center justify-center'>
                   <span className='mr-1 text-qs-form'>Bạn mới biết đến Shopee?</span>
-                  <Link className='text-orange' to='/register'>
+                  <Link className='text-orange' to={path.register}>
                     Đăng ký
                   </Link>
                 </div>
