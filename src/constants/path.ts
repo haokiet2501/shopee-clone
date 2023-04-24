@@ -5,6 +5,6 @@ const path = {
   logout: '/logout',
   profile: '/profile',
   cart: '/cart'
-}
+} as const
 
 export default path
