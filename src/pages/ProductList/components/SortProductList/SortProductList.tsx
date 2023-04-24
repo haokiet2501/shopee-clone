@@ -14,9 +14,7 @@ export default function SortProductList() {
             Bán chạy
           </button>
           <select className='h-8 bg-white px-4 text-left text-sm capitalize text-black outline-none hover:bg-slate-100'>
-            <option value='' disabled>
-              Giá
-            </option>
+            <option value=''>Giá</option>
             <option value='price:asc'>Giá: Thấp đến cao</option>
             <option value='price:desc'>Giá: Cao đến thấp</option>
           </select>
