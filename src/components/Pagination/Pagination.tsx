@@ -41,7 +41,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
       if (!dotBefore) {
         dotBefore = true
         return (
-          <span key={index} className='mx-2 rounded bg-white px-3 py-2 shadow-sm'>
+          <span key={index} className='mx-2 px-3 py-2 text-gray-500'>
             ...
           </span>
         )
@@ -53,7 +53,7 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
       if (!dotAfter) {
         dotAfter = true
         return (
-          <span key={index} className='mx-2 rounded bg-white px-3 py-2 shadow-sm'>
+          <span key={index} className='mx-2px-3 py-2 text-gray-500'>
             ...
           </span>
         )
