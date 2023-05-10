@@ -78,7 +78,7 @@ export default function RatingStars({ queryConfig, next, handleLoadmoreRating }:
                     )
                   }
                   return (
-                    <svg viewBox='0 0 30 30' className='mr-1 h-4 w-4' key={indexStar}>
+                    <svg viewBox='0 0 30 30' className='mr-1 flex h-4 w-4' key={indexStar}>
                       <defs>
                         <linearGradient id='star__hollow' x1='50%' x2='50%' y1='0%' y2='99.0177926%'>
                           <stop offset='0%' stopColor='#FFD211' />
@@ -95,7 +95,7 @@ export default function RatingStars({ queryConfig, next, handleLoadmoreRating }:
                     </svg>
                   )
                 })}
-              {index !== 0 && <span>Trở lên</span>}
+              {index !== 0 && <span>trở lên</span>}
             </div>
           </li>
         ))}
