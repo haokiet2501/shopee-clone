@@ -27,7 +27,8 @@ export default function Register() {
   } = useForm<FormData>({ resolver: yupResolver(registerSchema) })
 
   const registerAccMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) =>
+      authApi.registerAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
@@ -39,12 +40,17 @@ export default function Register() {
         navigate('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (
+          isAxiosUnprocessableEntityError<
+            ErrorResponse<Omit<FormData, 'confirm_password'>>
+          >(error)
+        ) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
               setError(key as keyof Omit<FormData, 'confirm_password'>, {
-                message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+                message:
+                  formError[key as keyof Omit<FormData, 'confirm_password'>],
                 type: 'Server'
               })
             })
@@ -59,7 +65,11 @@ export default function Register() {
         <div className='container'>
           <div className='grid grid-cols-1 py-12 lg:grid-cols-5 lg:py-28 lg:pr-10'>
             <div className='lg:col-span-2 lg:col-start-4'>
-              <form className='rounded bg-white p-10 shadow-md' onSubmit={onSubmit} noValidate>
+              <form
+                className='rounded bg-white p-10 shadow-md'
+                onSubmit={onSubmit}
+                noValidate
+              >
                 <div className='text-2xl'>Đăng ký</div>
                 <Input
                   type='email'
@@ -97,7 +107,9 @@ export default function Register() {
                   </Button>
                 </div>
                 <div className='mt-8 flex items-center justify-center'>
-                  <span className='mr-1 text-qs-form'>Bạn đã có tài khoản?</span>
+                  <span className='mr-1 text-qs-form'>
+                    Bạn đã có tài khoản?
+                  </span>
                   <Link className='text-orange' to={path.login}>
                     Đăng nhập
                   </Link>

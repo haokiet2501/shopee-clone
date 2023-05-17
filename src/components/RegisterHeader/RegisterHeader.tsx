@@ -18,9 +18,13 @@ export default function RegisterHeader() {
                 </g>
               </svg>
             </Link>
-            <div className='ml-5 text-xl lg:text-2xl'>{isActiveMode ? 'Đăng ký' : 'Đăng nhập'}</div>
+            <div className='ml-5 text-xl lg:text-2xl'>
+              {isActiveMode ? 'Đăng ký' : 'Đăng nhập'}
+            </div>
           </div>
-          <span className='hidden cursor-pointer text-xs text-orange lg:block lg:text-sm'>Bạn cần giúp đỡ?</span>
+          <span className='hidden cursor-pointer text-xs text-orange lg:block lg:text-sm'>
+            Bạn cần giúp đỡ?
+          </span>
         </nav>
       </div>
     </header>

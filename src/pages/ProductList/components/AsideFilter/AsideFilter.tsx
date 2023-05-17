@@ -56,7 +56,14 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
   const handleRemoveAsideFilter = () => {
     navigate({
       pathname: path.home,
-      search: createSearchParams(omit(queryConfig, ['price_min', 'price_max', 'rating_filter', 'category'])).toString()
+      search: createSearchParams(
+        omit(queryConfig, [
+          'price_min',
+          'price_max',
+          'rating_filter',
+          'category'
+        ])
+      ).toString()
     })
   }
 
@@ -106,7 +113,10 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 })}
               >
                 {isActive && (
-                  <svg viewBox='0 0 4 7' className='absolute left-[-10px] top-1 h-2 w-2 fill-orange'>
+                  <svg
+                    viewBox='0 0 4 7'
+                    className='absolute left-[-10px] top-1 h-2 w-2 fill-orange'
+                  >
                     <polygon points='4 3.5 0 0 0 7' />
                   </svg>
                 )}
@@ -116,7 +126,10 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
           )
         })}
       </ul>
-      <Link to={path.home} className='mt-4 flex items-center font-bold uppercase'>
+      <Link
+        to={path.home}
+        className='mt-4 flex items-center font-bold uppercase'
+      >
         <svg
           enableBackground='new 0 0 15 15'
           viewBox='0 0 15 15'
@@ -184,7 +197,9 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             />
           </div>
 
-          <div className='mt-1 min-h-[1.25rem] py-1 text-center text-xs text-red-600'>{errors.price_min?.message}</div>
+          <div className='mt-1 min-h-[1.25rem] py-1 text-center text-xs text-red-600'>
+            {errors.price_min?.message}
+          </div>
 
           <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>
             Áp dụng
@@ -193,7 +208,11 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       </div>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div>Đánh giá</div>
-      <RatingStar queryConfig={queryConfig} handleLoadmoreRating={handleLoadmoreRating} next={next} />
+      <RatingStar
+        queryConfig={queryConfig}
+        handleLoadmoreRating={handleLoadmoreRating}
+        next={next}
+      />
       <div className='my-4 h-[1px] bg-gray-300' />
       <Button
         onClick={handleRemoveAsideFilter}

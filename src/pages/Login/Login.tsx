@@ -28,7 +28,8 @@ export default function Login() {
   } = useForm<FormData>({ resolver: yupResolver(loginSchema) })
 
   const loginAccMutation = useMutation({
-    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.loginAccount(body)
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) =>
+      authApi.loginAccount(body)
   })
 
   const onSubmit = handleSubmit((data) => {
@@ -39,7 +40,11 @@ export default function Login() {
         navigate('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (
+          isAxiosUnprocessableEntityError<
+            ErrorResponse<Omit<FormData, 'confirm_password'>>
+          >(error)
+        ) {
           const formError = error.response?.data.data
           if (formError) {
             Object.keys(formError).forEach((key) => {
@@ -63,7 +68,10 @@ export default function Login() {
         <div className='container'>
           <div className='grid grid-cols-1 py-12 pt-36 lg:grid-cols-5 lg:pr-10'>
             <div className='lg:col-span-2 lg:col-start-4'>
-              <form onSubmit={onSubmit} className='rounded bg-white p-10 shadow-md'>
+              <form
+                onSubmit={onSubmit}
+                className='rounded bg-white p-10 shadow-md'
+              >
                 <div className='text-2xl'>Đăng nhập</div>
                 <Input
                   type='email'
@@ -92,7 +100,9 @@ export default function Login() {
                   </Button>
                 </div>
                 <div className='mt-8 flex items-center justify-center'>
-                  <span className='mr-1 text-qs-form'>Bạn mới biết đến Shopee?</span>
+                  <span className='mr-1 text-qs-form'>
+                    Bạn mới biết đến Shopee?
+                  </span>
                   <Link className='text-orange' to={path.register}>
                     Đăng ký
                   </Link>

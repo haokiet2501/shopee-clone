@@ -20,11 +20,15 @@ export default function Product({ product }: Props) {
           />
         </div>
         <div className='overflow-hidden p-2'>
-          <div className='line-clamp-2 min-h-[2rem] text-xs'>{product.name}</div>
+          <div className='line-clamp-2 min-h-[2rem] text-xs'>
+            {product.name}
+          </div>
           <div className='mt-3 flex items-center'>
             <div className='max-w-[50%] text-gray-400 line-through'>
               <span className='text-xs'>₫</span>
-              <span className='text-sm'>{formatCurrency(product.price_before_discount)}</span>
+              <span className='text-sm'>
+                {formatCurrency(product.price_before_discount)}
+              </span>
             </div>
             <div className='ml-1 text-orange'>
               <span className='text-xs'>₫</span>

@@ -7,7 +7,8 @@ import { AppContext } from '../../contexts/app.context'
 import path from 'src/constants/path'
 
 export default function Headers() {
-  const { isAuthenticated, setIsAuthenticated, setProfile, profile } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, setProfile, profile } =
+    useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: authApi.logoutAccount,
     onSuccess: () => {
@@ -28,8 +29,12 @@ export default function Headers() {
             renderPopover={
               <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
                 <div className='flex flex-col px-3 py-2'>
-                  <button className='py-2 pl-2 pr-28 hover:text-orange'>Tiếng Việt</button>
-                  <button className='mt-2 py-2 pl-2 pr-28 hover:text-orange'>English</button>
+                  <button className='py-2 pl-2 pr-28 hover:text-orange'>
+                    Tiếng Việt
+                  </button>
+                  <button className='mt-2 py-2 pl-2 pr-28 hover:text-orange'>
+                    English
+                  </button>
                 </div>
               </div>
             }
@@ -57,7 +62,11 @@ export default function Headers() {
               stroke='currentColor'
               className='h-6 w-6'
             >
-              <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M19.5 8.25l-7.5 7.5-7.5-7.5'
+              />
             </svg>
           </Popover>
           {isAuthenticated && (
@@ -98,11 +107,17 @@ export default function Headers() {
           )}
           {!isAuthenticated && (
             <div className='flex items-center text-white'>
-              <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
+              <Link
+                to={path.register}
+                className='mx-3 capitalize hover:text-white/70'
+              >
                 Đăng kí
               </Link>
               <div className='h-4 border-r-[1px] border-r-white/40' />
-              <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
+              <Link
+                to={path.login}
+                className='mx-3 capitalize hover:text-white/70'
+              >
                 Đăng nhập
               </Link>
             </div>
@@ -151,7 +166,9 @@ export default function Headers() {
               renderPopover={
                 <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
                   <div className='p-2'>
-                    <div className='capitalize text-gray-400'>Sản phẩm mới thêm</div>
+                    <div className='capitalize text-gray-400'>
+                      Sản phẩm mới thêm
+                    </div>
                     <div className='mt-5'>
                       <div className='mt-4 flex'>
                         <div className='flex-shrink-0'>
@@ -162,7 +179,9 @@ export default function Headers() {
                           />
                         </div>
                         <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm</div>
+                          <div className='truncate'>
+                            Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm
+                          </div>
                         </div>
                         <div className='ml-2 flex-shrink-0'>
                           <span className='text-orange'>đ469.000</span>
@@ -177,7 +196,9 @@ export default function Headers() {
                           />
                         </div>
                         <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm</div>
+                          <div className='truncate'>
+                            Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm
+                          </div>
                         </div>
                         <div className='ml-2 flex-shrink-0'>
                           <span className='text-orange'>đ469.000</span>
@@ -192,7 +213,9 @@ export default function Headers() {
                           />
                         </div>
                         <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm</div>
+                          <div className='truncate'>
+                            Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm
+                          </div>
                         </div>
                         <div className='ml-2 flex-shrink-0'>
                           <span className='text-orange'>đ469.000</span>
@@ -207,7 +230,9 @@ export default function Headers() {
                           />
                         </div>
                         <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm</div>
+                          <div className='truncate'>
+                            Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm
+                          </div>
                         </div>
                         <div className='ml-2 flex-shrink-0'>
                           <span className='text-orange'>đ469.000</span>
@@ -222,7 +247,9 @@ export default function Headers() {
                           />
                         </div>
                         <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm</div>
+                          <div className='truncate'>
+                            Bộ Nồi Inos 3 Đáy SUNHOUSE SH334 16, 20, 24cm
+                          </div>
                         </div>
                         <div className='ml-2 flex-shrink-0'>
                           <span className='text-orange'>đ469.000</span>
@@ -230,7 +257,9 @@ export default function Headers() {
                       </div>
                     </div>
                     <div className='mt-6 flex items-center justify-between'>
-                      <div className='text-xs capitalize text-gray-500'>Thêm vào giỏ hàng</div>
+                      <div className='text-xs capitalize text-gray-500'>
+                        Thêm vào giỏ hàng
+                      </div>
                       <button className='rounded-sm bg-orange px-4 py-2 capitalize text-white hover:bg-opacity-90'>
                         Xem giỏ hàng
                       </button>

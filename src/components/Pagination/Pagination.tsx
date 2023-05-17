@@ -65,15 +65,26 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
       .fill(0)
       .map((_, index) => {
         const pageNumber = index + 1
-        if (page <= RANGE * 2 + 1 && pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+        if (
+          page <= RANGE * 2 + 1 &&
+          pageNumber > page + RANGE &&
+          pageNumber < pageSize - RANGE + 1
+        ) {
           return renderDotAfter(index)
         } else if (page > RANGE * 2 + 1 && page < pageSize - RANGE * 2) {
           if (pageNumber < page - RANGE && pageNumber > RANGE) {
             return renderDotBefore(index)
-          } else if (pageNumber > page + RANGE && pageNumber < pageSize - RANGE + 1) {
+          } else if (
+            pageNumber > page + RANGE &&
+            pageNumber < pageSize - RANGE + 1
+          ) {
             return renderDotAfter(index)
           }
-        } else if (page >= pageSize - RANGE * 2 && pageNumber > RANGE && pageNumber < page - RANGE) {
+        } else if (
+          page >= pageSize - RANGE * 2 &&
+          pageNumber > RANGE &&
+          pageNumber < page - RANGE
+        ) {
           return renderDotBefore(index)
         }
 
@@ -87,10 +98,13 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
               }).toString()
             }}
             key={index}
-            className={classNames('mx-2 flex cursor-pointer items-center rounded-[2px] px-4 py-2 text-gray-400', {
-              'bg-orange font-bold text-white': pageNumber === page,
-              'bg-transparent': pageNumber !== page
-            })}
+            className={classNames(
+              'mx-2 flex cursor-pointer items-center rounded-[2px] px-4 py-2 text-gray-400',
+              {
+                'bg-orange font-bold text-white': pageNumber === page,
+                'bg-transparent': pageNumber !== page
+              }
+            )}
           >
             {pageNumber}
           </Link>
@@ -109,7 +123,11 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             stroke='currentColor'
             className='h-6 w-6 stroke-gray-400'
           >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M15.75 19.5L8.25 12l7.5-7.5'
+            />
           </svg>
         </div>
       ) : (
@@ -131,7 +149,11 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             stroke='currentColor'
             className='h-6 w-6 stroke-gray-700'
           >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M15.75 19.5L8.25 12l7.5-7.5'
+            />
           </svg>
         </Link>
       )}
@@ -146,7 +168,11 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             stroke='currentColor'
             className='h-6 w-6 stroke-gray-400'
           >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M8.25 4.5l7.5 7.5-7.5 7.5'
+            />
           </svg>
         </div>
       ) : (
@@ -168,7 +194,11 @@ export default function Pagination({ queryConfig, pageSize }: Props) {
             stroke='currentColor'
             className='h-6 w-6 stroke-gray-700'
           >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' />
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M8.25 4.5l7.5 7.5-7.5 7.5'
+            />
           </svg>
         </Link>
       )}

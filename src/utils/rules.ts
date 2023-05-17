@@ -1,7 +1,9 @@
 import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
 import * as yup from 'yup'
 
-type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
+type Rules = {
+  [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
@@ -51,12 +53,17 @@ export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
       message: 'Độ dài mật khẩu phải từ 5 - 160 ký tự'
     },
     validate:
-      typeof getValues === 'function' ? (value) => value === getValues('password') || 'Mật mẩu không khớp.' : undefined
+      typeof getValues === 'function'
+        ? (value) => value === getValues('password') || 'Mật mẩu không khớp.'
+        : undefined
   }
 })
 
 function testPriceMinMax(this: yup.TestContext<yup.AnyObject>) {
-  const { price_max, price_min } = this.parent as { price_min: string; price_max: string }
+  const { price_max, price_min } = this.parent as {
+    price_min: string
+    price_max: string
+  }
   if (price_min !== '' && price_max !== '') {
     return Number(price_max) >= Number(price_min)
   }

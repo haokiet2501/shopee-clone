@@ -4,7 +4,13 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean
 }
 
-export default function Button({ className, disabled, isLoading, children, ...rest }: ButtonProps) {
+export default function Button({
+  className,
+  disabled,
+  isLoading,
+  children,
+  ...rest
+}: ButtonProps) {
   const newClassName = disabled ? `${className} cursor-not-allowed` : className
   return (
     <button className={newClassName} disabled={disabled} {...rest}>
