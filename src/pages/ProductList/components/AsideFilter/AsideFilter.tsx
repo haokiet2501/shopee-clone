@@ -2,7 +2,6 @@ import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Button from 'src/components/Button'
 import path from 'src/constants/path'
 import classNames from 'classnames'
-import { QueryConfig } from '../../ProductList'
 import { Category } from 'src/types/category.type'
 import InputNumber from 'src/components/InputNumber'
 import { useForm, Controller } from 'react-hook-form'
@@ -12,6 +11,7 @@ import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStar from '../RatingStar'
 import { omit } from 'lodash'
 import { useState } from 'react'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
   queryConfig: QueryConfig
