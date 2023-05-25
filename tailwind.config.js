@@ -20,7 +20,8 @@ export default {
         'shadow-hd': '0 6px 6px rgba(0,0,0,.6)'
       },
       backgroundImage: {
-        'banner-pattern': "url('https://down-vn.img.susercontent.com/file/sg-11134004-23030-vhzme1v5qvov4a')"
+        'banner-pattern':
+          "url('https://down-vn.img.susercontent.com/file/sg-11134004-23030-vhzme1v5qvov4a')"
       }
     }
   },

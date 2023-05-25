@@ -4,6 +4,7 @@ import { schema, Schema } from 'src/utils/rules'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { omit } from 'lodash'
 import { ErrorResponse } from 'src/types/utils.type'
 import authApi from 'src/apis/auth.api'
@@ -23,7 +24,6 @@ export default function Login() {
     register,
     handleSubmit,
     setError,
-    watch,
     formState: { errors }
   } = useForm<FormData>({ resolver: yupResolver(loginSchema) })
 
@@ -58,9 +58,6 @@ export default function Login() {
       }
     })
   })
-
-  const value = watch()
-  console.log(value, errors)
 
   return (
     <div className='bg-bg-pattern'>
