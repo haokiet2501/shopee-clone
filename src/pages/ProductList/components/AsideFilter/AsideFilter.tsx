@@ -12,7 +12,7 @@ import RatingStar from '../RatingStar'
 import { omit } from 'lodash'
 import { useState } from 'react'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
-import InputV2 from 'src/components/InputV2'
+// import InputV2 from 'src/components/InputV2'
 
 interface Props {
   queryConfig: QueryConfig
