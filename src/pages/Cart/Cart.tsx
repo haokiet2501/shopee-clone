@@ -207,7 +207,7 @@ export default function Cart() {
                                 alt={purchase.product.name}
                               />
                             </Link>
-                            <div className='flex-grow px-2 pb-2 pt-1'>
+                            <div className='flex-grow px-2 pb-2 pt-1 text-left'>
                               <Link
                                 className='line-clamp-2'
                                 to={`${path.home}${generateNameId({
