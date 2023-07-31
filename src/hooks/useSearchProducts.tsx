@@ -26,19 +26,19 @@ export default function useSearchProducts() {
     const config = queryConfig.order
       ? omit(
           {
-            ...useQueryConfig,
-            sort_by: data.name
+            ...queryConfig,
+            name: data.name
           },
           ['order', 'sort_by']
         )
       : {
           ...queryConfig,
-          sort_by: data.name
+          name: data.name
         }
     navigate({
       pathname: path.home,
       search: createSearchParams(config).toString()
     })
   })
-  return { register, onSubmitSearch }
+  return { onSubmitSearch, register }
 }
