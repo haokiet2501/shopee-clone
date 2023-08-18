@@ -81,7 +81,7 @@ export default function NavHeader() {
           renderPopover={
             <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
               <Link
-                to='/profile'
+                to={path.profile}
                 className='block w-full bg-white px-4 py-3 text-left hover:bg-slate-100 hover:text-cyan-500'
               >
                 Tài khoản của tôi
