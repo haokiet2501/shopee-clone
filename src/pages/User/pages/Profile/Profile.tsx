@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import userAPi from 'src/apis/user.api'
 import Button from 'src/components/Button'
@@ -8,6 +8,9 @@ import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import DateSelect from '../../components/DateSelect'
+import { AppContext } from 'src/contexts/app.context'
+import { toast } from 'react-toastify'
+import { setProfileToLS } from 'src/utils/auth'
 
 type FormData = Pick<
   UserSchema,
@@ -23,7 +26,8 @@ const profileSchema = userSchema.pick([
 ])
 
 export default function Profile() {
-  const { data: profileData } = useQuery({
+  const { setProfile } = useContext(AppContext)
+  const { data: profileData, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: userAPi.getProfile
   })
@@ -53,8 +57,8 @@ export default function Profile() {
   useEffect(() => {
     if (profile) {
       setValue('name', profile.name || '')
-      setValue('address', profile.address || '')
       setValue('phone', profile.phone || '')
+      setValue('address', profile.address || '')
       setValue('avatar', profile.avatar || '')
       setValue(
         'date_of_birth',
@@ -66,11 +70,15 @@ export default function Profile() {
   }, [profile, setValue])
 
   const onSubmit = handleSubmit(async (data) => {
-    await updateProfileMutation.mutateAsync({})
+    const res = await updateProfileMutation.mutateAsync({
+      ...data,
+      date_of_birth: data.date_of_birth?.toISOString()
+    })
+    setProfile(res.data.data)
+    setProfileToLS(res.data.data)
+    refetch()
+    toast.success(res.data.message)
   })
-
-  const value = watch()
-  console.log(value, errors)
 
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
