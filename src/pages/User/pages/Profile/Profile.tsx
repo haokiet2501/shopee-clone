@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import React, { useContext, useEffect, useRef, useMemo, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import userAPi from 'src/apis/user.api'
 import Button from 'src/components/Button'
@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import { setProfileToLS } from 'src/utils/auth'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
-import config from 'src/constants/config'
+import InputFile from 'src/components/InputFile'
 
 type FormData = Pick<
   UserSchema,
@@ -41,7 +41,6 @@ const profileSchema = userSchema.pick([
 // Chậm hơn flow 1 nhưng đảm bảo hơn.
 
 export default function Profile() {
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const { setProfile } = useContext(AppContext)
   const [file, setFile] = useState<File>()
   const filePreviewImage = useMemo(() => {
@@ -129,23 +128,8 @@ export default function Profile() {
     }
   })
 
-  const handleInputFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileFromLocal = e.target.files?.[0]
-    if (
-      fileFromLocal &&
-      (fileFromLocal.size >= config.maxSizeUploadAvatar ||
-        !fileFromLocal.type.includes('image'))
-    ) {
-      toast.error('Dung lượng tối đa là 1MB, Định dạng: .JPEG, .PNG', {
-        position: 'top-center'
-      })
-    } else {
-      setFile(fileFromLocal)
-    }
-  }
-
-  const handleUpload = () => {
-    fileInputRef.current?.click()
+  const handleChangeInput = (file?: File) => {
+    setFile(file)
   }
 
   return (
@@ -250,24 +234,7 @@ export default function Profile() {
                 className='h-full w-full rounded-full object-cover'
               />
             </div>
-            <input
-              type='file'
-              accept='.jpg, .jpeg, .png'
-              className='hidden'
-              ref={fileInputRef}
-              onChange={handleInputFile}
-              onClick={(e) => {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ;(e.target as any).value = null
-              }}
-            />
-            <button
-              type='button'
-              className='flex h-10 items-center justify-center rounded-sm border bg-white px-6 text-sm text-gray-600 shadow-sm'
-              onClick={handleUpload}
-            >
-              Chọn ảnh
-            </button>
+            <InputFile onChange={handleChangeInput} />
             <div className='mt-3 text-xs text-gray-400'>
               <div>Dung lượng ảnh tối đa 1MB</div>
               <div>Định dạng: .JPEG, .PNG</div>
