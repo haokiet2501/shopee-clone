@@ -8,7 +8,7 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import { ErrorResponse } from 'src/types/utils.type'
 import { useMutation } from '@tanstack/react-query'
 import userAPi from 'src/apis/user.api'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import { ObjectSchema } from 'yup'
 
 type FormData = Pick<
