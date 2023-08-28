@@ -103,7 +103,7 @@ export default function Cart() {
         }) || []
       )
     })
-  }, [choosenPurchaseIdFromLocation, purchasesInCart])
+  }, [choosenPurchaseIdFromLocation, purchasesInCart, setExtendedPurchases])
 
   useEffect(() => {
     return () => history.replaceState(null, '')
