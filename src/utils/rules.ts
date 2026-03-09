@@ -1,14 +1,15 @@
-import type { RegisterOptions } from "react-hook-form"
-import type { FormData } from "src/pages/Register/Register"
+import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
+import type { FormData } from 'src/pages/Register/Register'
 
-type Rules = {[K in keyof FormData]?: RegisterOptions<FormData, K>}
+type Rules = { [K in keyof FormData]?: RegisterOptions<FormData, K> }
 
-export const rules: Rules = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   email: {
     required: {
       value: true,
       message: 'Email là bắt buộc.'
-    }, 
+    },
     pattern: {
       value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       message: 'Email không đúng định dạng.'
@@ -48,6 +49,10 @@ export const rules: Rules = {
     minLength: {
       value: 6,
       message: 'Mật khẩu phải từ 6 - 160 kí tự.'
-    }
+    },
+    validate:
+      typeof getValues === 'function'
+        ? (value) => value === getValues('password') || 'Nhập lại mật khẩu không khớp'
+        : undefined
   }
-}
+})

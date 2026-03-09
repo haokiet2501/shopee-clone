@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
-import { rules } from 'src/utils/rules'
+import { getRules } from 'src/utils/rules'
 
 export interface FormData {
   email: string
@@ -12,12 +12,21 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm<FormData>()
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
-  })
+  const rules = getRules(getValues)
+
+  const onSubmit = handleSubmit(
+    (data) => {
+      // console.log(data)
+    },
+    (data) => {
+      const password = getValues('password')
+      console.log(password)
+    }
+  )
   return (
     <div className='bg-orange-75'>
       <div className='max-w-7xl mx-auto px-12'>
@@ -38,6 +47,7 @@ export default function Register() {
                 <input
                   type='password'
                   placeholder='Password'
+                  autoComplete='on'
                   {...register('password', rules.password)}
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                 />
@@ -47,6 +57,7 @@ export default function Register() {
                 <input
                   type='password'
                   placeholder='Confirm Password'
+                  autoComplete='on'
                   {...register('confirm_password', rules.confirm_password)}
                   className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                 />
