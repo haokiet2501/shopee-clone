@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export default function RegisterHeader() {
   return (
     <header className='py-5'>
-      <div className='max-w-7xl mx-auto px-4'>
+      <div className='container px-4'>
         <div className='flex items-center justify-between'>
           <nav className='flex items-end'>
             <Link to='/' className='h-8 lg:h-11 cursor-pointer'>
