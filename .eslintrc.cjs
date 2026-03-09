@@ -33,6 +33,10 @@ module.exports = {
     node: true
   },
   rules: {
+    // Tắt cảnh báo rác trong eslint
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // Thay vì "error", chỉ hiện cảnh báo vàng
+    ],
     // Tắt rule yêu cầu import React trong file jsx
     'react/react-in-jsx-scope': 'off',
     // Cảnh báo khi thẻ <a target='_blank'> mà không có rel="noreferrer"
