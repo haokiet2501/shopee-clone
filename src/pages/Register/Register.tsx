@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import Input from 'src/components/Input'
 import { schema, type Schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { registerAccount } from 'src/api/auth.api'
+import { omit } from 'lodash'
 
 type FormData = Schema
 
@@ -15,15 +18,21 @@ export default function Register() {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = handleSubmit(
-    (data) => {
-      console.log(data)
-    }
-    // (data) => {
-    //   const password = getValues('password')
-    //   console.log(password)
-    // }
-  )
+  // Gọi api để register.
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => registerAccount(body)
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    // Body dùng omit để loại bỏ confirm_password k dùng đến để đăng kí account.
+    const body = omit(data, ['confirm_password'])
+    // Gọi registerAM.mutate để xử lí đăng kí.
+    registerAccountMutation.mutate(body, {
+      onSuccess: data => {
+        console.log(data)
+      }
+    })
+  })
   return (
     <div className='bg-orange-75'>
       <div className='container px-12'>
