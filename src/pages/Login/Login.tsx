@@ -1,33 +1,84 @@
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useMutation } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { loginAccount } from 'src/api/auth.api'
+import Input from 'src/components/Input'
+import type { ResponseApi } from 'src/types/utils.type'
+import { schema, type Schema } from 'src/utils/rules'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
+
+type FormData = Omit<Schema, 'confirm_password'>
+const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<FormData>({
+    resolver: yupResolver(loginSchema)
+  })
+
+  // Gọi api để login.
+  const loginAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => loginAccount(body)
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data)
+    // Gọi loginAM.mutate để xử lí đăng nhập.
+    loginAccountMutation.mutate(data, {
+      onSuccess: (data) => {
+        console.log(data)
+      },
+      onError: (error) => {
+        // Bắt lỗi 422 từ server.
+        if (isAxiosUnprocessableEntityError<ResponseApi<FormData>>(error)) {
+          const formError = error.response?.data.data
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
+              setError(key as keyof Omit<FormData, 'confirm_password'>, {
+                message: formError[key as keyof Omit<FormData, 'confirm_password'>],
+                type: 'Server'
+              })
+            })
+          }
+        }
+      }
+    })
+  })
+
   return (
     <div className='bg-orange-75'>
       <div className='container px-12'>
         <div className='grid grid-cols-1 lg:grid-cols-5 py-12 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='p-10 rounded bg-white shadow-sm'>
+            <form className='p-10 rounded bg-white shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng Nhập</div>
-              <div className='mt-8'>
-                <input
-                  type='email'
-                  name='email'
-                  placeholder='Email'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                />
-                <div className='mt-1 text-red-600 min-h-4 text-sm'></div>
-              </div>
+              <Input
+                name='email'
+                type='email'
+                placeholder='Email'
+                register={register}
+                className='mt-8'
+                errorMessage={errors.email?.message}
+              />
+              <Input
+                name='password'
+                type='password'
+                placeholder='Password'
+                register={register}
+                className='mt-2'
+                autoComplete='on'
+                errorMessage={errors.password?.message}
+              />
               <div className='mt-3'>
-                <input
-                  type='password'
-                  name='password'
-                  placeholder='Password'
-                  className='p-3 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                />
-                <div className='mt-1 text-red-600 min-h-4 text-sm'></div>
-              </div>
-              <div className='mt-3'>
-                <button className='w-full text-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91]'>
+                <button
+                  type='submit'
+                  className='w-full text-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91]'
+                >
                   Đăng nhập
                 </button>
               </div>
