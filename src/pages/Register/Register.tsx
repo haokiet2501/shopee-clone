@@ -1,32 +1,28 @@
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import Input from 'src/components/Input'
-import { getRules } from 'src/utils/rules'
+import { schema, type Schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
 
-export interface FormData {
-  email: string
-  password: string
-  confirm_password: string
-}
+type FormData = Schema
 
 export default function Register() {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors }
-  } = useForm<FormData>()
-
-  const rules = getRules(getValues)
+  } = useForm<FormData>({
+    resolver: yupResolver(schema)
+  })
 
   const onSubmit = handleSubmit(
     (data) => {
-      // console.log(data)
-    },
-    (data) => {
-      const password = getValues('password')
-      console.log(password)
+      console.log(data)
     }
+    // (data) => {
+    //   const password = getValues('password')
+    //   console.log(password)
+    // }
   )
   return (
     <div className='bg-orange-75'>
@@ -40,7 +36,6 @@ export default function Register() {
                 type='email'
                 placeholder='Email'
                 register={register}
-                rules={rules.email}
                 className='mt-8'
                 errorMessage={errors.email?.message}
               />
@@ -49,8 +44,8 @@ export default function Register() {
                 type='password'
                 placeholder='Password'
                 register={register}
-                rules={rules.password}
                 className='mt-2'
+                autoComplete='on'
                 errorMessage={errors.password?.message}
               />
               <Input
@@ -58,8 +53,8 @@ export default function Register() {
                 type='password'
                 placeholder='Confirm Password'
                 register={register}
-                rules={rules.confirm_password}
                 className='mt-2'
+                autoComplete='on'
                 errorMessage={errors.confirm_password?.message}
               />
               <div className='mt-2'>

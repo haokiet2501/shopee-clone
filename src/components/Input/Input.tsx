@@ -6,7 +6,9 @@ interface Props {
   placeholder?: string
   className?: string
   name: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rules?: RegisterOptions<any, any>
   autoComplete?: string
 }
