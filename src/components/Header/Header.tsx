@@ -1,11 +1,51 @@
 import { Link } from 'react-router-dom'
+import { useFloating, FloatingPortal, autoUpdate, FloatingArrow, arrow } from '@floating-ui/react'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false)
+  // Gọi arrRef để lấy arrow trong fl-ui.
+  const arrowRef = useRef<SVGSVGElement>(null)
+
+  // Sử dụng floating ui
+  const { x, y, refs, strategy, elements, context } = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      // eslint-disable-next-line react-hooks/refs
+      arrow({
+        element: arrowRef
+      })
+    ]
+  })
+
+  // Show popover
+  const showPopover = () => {
+    setIsOpen(true)
+  }
+
+  // Hidden popover
+  const hiddenPopover = () => {
+    setIsOpen(false)
+  }
+
+  useEffect(() => {
+    if (!elements.floating) return
+  }, [refs, elements.floating])
+
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white'>
       <div className='container'>
         <div className='flex justify-end'>
-          <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer'>
+          <div
+            className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
+            // eslint-disable-next-line react-hooks/refs
+            ref={refs.setReference}
+            onMouseEnter={showPopover}
+            onMouseLeave={hiddenPopover}
+          >
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -31,6 +71,37 @@ export default function Header() {
             >
               <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
             </svg>
+            <FloatingPortal>
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    key='floating-menu'
+                    // eslint-disable-next-line react-hooks/refs
+                    ref={refs.setFloating}
+                    style={{
+                      position: strategy,
+                      top: y ?? 0,
+                      left: x ?? 0,
+                      width: 'max-content',
+                      zIndex: 50,
+                      transformOrigin: 'top center'
+                    }}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <FloatingArrow ref={arrowRef} context={context} fill='white' />
+                    <div className='bg-white relative shadow-sm rounded-sm border border-gray-200'>
+                      <div className='flex flex-col py-2 px-3'>
+                        <button className='py-2 px-3 hover:text-orange-75'>Tiếng Việt</button>
+                        <button className='py-2 px-3 hover:text-orange-75 mt-2'>English</button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </FloatingPortal>
           </div>
           <div className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'>
             <div className='w-5 h-5 mr-2 shrink-0'>
