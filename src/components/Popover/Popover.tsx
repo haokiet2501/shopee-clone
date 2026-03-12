@@ -1,6 +1,7 @@
-import { useFloating, FloatingPortal, autoUpdate, FloatingArrow, arrow } from '@floating-ui/react'
+import { useFloating, FloatingPortal, autoUpdate, FloatingArrow, arrow, offset, flip, shift } from '@floating-ui/react'
 import { useEffect, useId, useRef, useState, type ElementType } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import type { Placement } from '@floating-ui/react'
 
 interface Props {
   children: React.ReactNode
@@ -8,9 +9,10 @@ interface Props {
   className?: string
   as?: ElementType
   initialOpen?: boolean
+  placement?: Placement
 }
 
-export default function Popover({ children, renderPopover, className, as: Element = 'div', initialOpen }: Props) {
+export default function Popover({ children, renderPopover, className, as: Element = 'div', initialOpen, placement = 'bottom-end' }: Props) {
   const [isOpen, setIsOpen] = useState(initialOpen || false)
   // Gọi arrRef để lấy arrow trong fl-ui.
   const arrowRef = useRef<SVGSVGElement>(null)
@@ -21,8 +23,12 @@ export default function Popover({ children, renderPopover, className, as: Elemen
   const { x, y, refs, strategy, elements, context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
+    placement: placement, // dòng này là để nó lúc nào cũng nằm ở lề phải.
     whileElementsMounted: autoUpdate,
     middleware: [
+      offset(10), // Khoảng cách giữa icon và popover
+      flip(), // Tự động nhảy lên trên nếu phía dưới hết chỗ
+      shift({ padding: 10 }), // Dòng này giúp popover dính sát lề chứ không văng ra ngoài
       // eslint-disable-next-line react-hooks/refs
       arrow({
         element: arrowRef
@@ -77,7 +83,7 @@ export default function Popover({ children, renderPopover, className, as: Elemen
                 context={context}
                 fill='white'
                 strokeWidth={1}
-                style={{ transform: 'translateY(-1px) translateX(-20px)', zIndex: 1}}
+                style={{ transform: 'translateY(-1px)', zIndex: 1 }}
               />
               {renderPopover}
             </motion.div>

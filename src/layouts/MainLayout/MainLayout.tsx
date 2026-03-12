@@ -11,6 +11,6 @@ export default function MainLayout({ children }: Props) {
       <Header />
       {children}
       <Footer />
-    </>
+    </> 
   )
 }

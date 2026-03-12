@@ -4,13 +4,13 @@ import Popover from '../Popover'
 export default function Header() {
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white'>
-      <div className='container'>
+      <div className='container px-4'>
         <div className='flex justify-end'>
           <Popover
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
             renderPopover={
               <div className='bg-white text-sm relative w-45 shadow-sm rounded-xs'>
-                <div className='flex flex-col items-start p-[10px_16px_14px] pr-22'>
+                <div className='flex flex-col items-start p-[10px_16px_14px]'>
                   <button className='pt-1.5 pb-1.5 hover:text-orange-75'>Tiếng Việt</button>
                   <button className='pt-1.5 pb-1.5 hover:text-orange-75'>English</button>
                 </div>
@@ -106,22 +106,113 @@ export default function Header() {
               </button>
             </div>
           </form>
-          <div className='ml-4 col-span-1'>
-            <Link to='/'>
-              <svg viewBox='0 0 26.6 25.6' className='w-6 h-6 lg:w-7 lg:h-7' stroke='white' fill='currentColor'>
-                <title>Shopping Cart Icon</title>
-                <polyline
-                  fill='none'
-                  points='2 1.7 5.5 1.7 9.6 18.3 21.2 18.3 24.6 6.1 7 6.1'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeMiterlimit={10}
-                  strokeWidth='2.5'
-                />
-                <circle cx='10.7' cy={23} r='2.2' stroke='none' />
-                <circle cx='19.7' cy={23} r='2.2' stroke='none' />
-              </svg>
-            </Link>
+          <div className='col-span-1 justify-self-end'>
+            <Popover
+              renderPopover={
+                <div className='bg-white relative shadow-md rounded-xs border border-white w-max max-w-[calc(100vw-32px)] sm:w-100 text-sm'>
+                  <div className='p-2'>
+                    <div className='text-gray-400 capitalize'>Sản phẩm mới thêm</div>
+                    <div className='mt-5'>
+                      <div className='mt-4 flex'>
+                        <div className='shrink-0'>
+                          <img
+                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
+                            alt='avatar'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='grow ml-2 overflow-hidden'>
+                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
+                        </div>
+                        <div className='ml-2 shrink-0'>
+                          <span className='text-orange-75'>192.000₫</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='shrink-0'>
+                          <img
+                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
+                            alt='avatar'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='grow ml-2 overflow-hidden'>
+                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
+                        </div>
+                        <div className='ml-2 shrink-0'>
+                          <span className='text-orange-75'>192.000₫</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='shrink-0'>
+                          <img
+                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
+                            alt='avatar'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='grow ml-2 overflow-hidden'>
+                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
+                        </div>
+                        <div className='ml-2 shrink-0'>
+                          <span className='text-orange-75'>192.000₫</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='shrink-0'>
+                          <img
+                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
+                            alt='avatar'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='grow ml-2 overflow-hidden'>
+                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
+                        </div>
+                        <div className='ml-2 shrink-0'>
+                          <span className='text-orange-75'>192.000₫</span>
+                        </div>
+                      </div>
+                      <div className='mt-4 flex'>
+                        <div className='shrink-0'>
+                          <img
+                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
+                            alt='avatar'
+                            className='w-11 h-11 object-cover'
+                          />
+                        </div>
+                        <div className='grow ml-2 overflow-hidden'>
+                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
+                        </div>
+                        <div className='ml-2 shrink-0'>
+                          <span className='text-orange-75'>192.000₫</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex mt-6 items-center justify-between">
+                      <div className="capitalize text-xs text-gray-500">Thêm hàng vào giỏ</div>
+                      <div className="button capitalize bg-orange-75 text-white px-4 py-2 hover:opacity-[.91] rounded-sm">Xem giỏ hàng</div>
+                    </div>
+                  </div>
+                </div>
+              }
+            >
+              <Link to='/'>
+                <svg viewBox='0 0 26.6 25.6' className='w-6 h-6 lg:w-7 lg:h-7' stroke='white' fill='currentColor'>
+                  <title>Shopping Cart Icon</title>
+                  <polyline
+                    fill='none'
+                    points='2 1.7 5.5 1.7 9.6 18.3 21.2 18.3 24.6 6.1 7 6.1'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeMiterlimit={10}
+                    strokeWidth='2.5'
+                  />
+                  <circle cx='10.7' cy={23} r='2.2' stroke='none' />
+                  <circle cx='19.7' cy={23} r='2.2' stroke='none' />
+                </svg>
+              </Link>
+            </Popover>
           </div>
         </div>
       </div>
