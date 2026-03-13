@@ -1,4 +1,5 @@
 import { Link, useMatch } from 'react-router-dom'
+import path from 'src/contexts/path'
 
 export default function RegisterHeader() {
   const registerMatch = useMatch('/register')
@@ -9,7 +10,7 @@ export default function RegisterHeader() {
       <div className='container px-4'>
         <div className='flex items-center justify-between'>
           <nav className='flex items-end'>
-            <Link to='/' className='h-8 lg:h-11 cursor-pointer'>
+            <Link to={path.home} className='h-8 lg:h-11 cursor-pointer'>
               <svg viewBox='0 0 192 65' className='h-full w-auto'>
                 <g fillRule='evenodd'>
                   <path
@@ -22,7 +23,7 @@ export default function RegisterHeader() {
             <div className='ml-5 text-xl lg:text-2xl'>{isRegister ? 'Đăng ký' : 'Đăng nhập'}</div>
           </nav>
 
-          <Link to='' className='text-orange-75 cursor-pointer'>
+          <Link to={path.home} className='text-orange-75 cursor-pointer'>
             Bạn cần giúp đỡ?
           </Link>
         </div>

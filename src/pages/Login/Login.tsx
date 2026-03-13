@@ -7,6 +7,7 @@ import { loginAccount } from 'src/api/auth.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import { AppContext } from 'src/contexts/app.context'
+import path from 'src/contexts/path'
 import type { ErrorResponse } from 'src/types/utils.type'
 import { schema, type Schema } from 'src/utils/rules'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
@@ -15,7 +16,7 @@ type FormData = Omit<Schema, 'confirm_password'>
 const loginSchema = schema.omit(['confirm_password'])
 
 export default function Login() {
-  const { setIsAuthenticated } = useContext(AppContext)
+  const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
 
   const {
@@ -41,8 +42,9 @@ export default function Login() {
     console.log(data)
     // Gọi loginAM.mutate để xử lí đăng nhập.
     loginAccountMutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.data.data.user)
         navigate('/')
       },
       onError: (error) => {
@@ -98,7 +100,7 @@ export default function Login() {
               </div>
               <div className='flex items-center justify-center mt-8'>
                 <span className='text-gray-75 mr-1'>Bạn chưa có tài khoản?</span>
-                <Link to='/register' className='text-orange-75 cursor-pointer'>
+                <Link to={path.register} className='text-orange-75 cursor-pointer'>
                   Đăng kí
                 </Link>
               </div>

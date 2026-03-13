@@ -4,13 +4,15 @@ import { useMutation } from '@tanstack/react-query'
 import { logout } from 'src/api/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import path from 'src/contexts/path'
 
 export default function Header() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const { isAuthenticated, setIsAuthenticated, profile, setProfile } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
       setIsAuthenticated(false)
+      setProfile(null)
     }
   })
 
@@ -22,7 +24,7 @@ export default function Header() {
       <div className='container px-4'>
         <div className='flex justify-end'>
           <Popover
-            className='flex items-center py-1 hover:text-gray-300 cursor-pointer'
+            className='flex items-center py-1 hover:text-white/70 cursor-pointer'
             renderPopover={
               <div className='bg-white text-sm relative w-45 shadow-sm rounded-xs'>
                 <div className='flex flex-col items-start p-[10px_16px_14px]'>
@@ -61,7 +63,7 @@ export default function Header() {
           {/* Đã login rồi thì sẽ hiện popover */}
           {isAuthenticated && (
              <Popover
-            className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'
+            className='flex items-center py-1 hover:text-white/70 cursor-pointer ml-6'
             renderPopover={
               <div className='bg-white relative shadow-sm w-37.5 rounded-xs border border-white text-sm'>
                 <Link
@@ -70,7 +72,7 @@ export default function Header() {
                 >
                   Tài khoản của tôi
                 </Link>
-                <Link to='/' className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                <Link to={path.home} className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
                   Đơn mua
                 </Link>
                 <button
@@ -89,24 +91,24 @@ export default function Header() {
                 className='w-full h-full object-cover rounded-full'
               />
             </div>
-            <div>KDev</div>
+            <div>{profile?.email}</div>
           </Popover>
           )}
           {/* Nếu tài khoản đã logout thì sẽ hiện. */}
           {!isAuthenticated && (
             <div className='flex items-center'>
-              <Link to='/register' className='mx-3 capitalize hover:text-white/70'>
+              <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
                 Đăng ký
               </Link>
               <div className="border-r border-r-white/40 h-4" />
-              <Link to='/login' className='mx-3 capitalize hover:text-white/70'>
+              <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
                 Đăng nhập
               </Link>
             </div>
           )}
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
-          <Link to='/' className='col-span-2'>
+          <Link to={path.home} className='col-span-2'>
             <svg viewBox='0 0 192 65' className='h-9 lg:h-13'>
               <g fillRule='evenodd'>
                 <path
@@ -235,7 +237,7 @@ export default function Header() {
                 </div>
               }
             >
-              <Link to='/'>
+              <Link to={path.home}>
                 <svg viewBox='0 0 26.6 25.6' className='w-6 h-6 lg:w-7 lg:h-7' stroke='white' fill='currentColor'>
                   <title>Shopping Cart Icon</title>
                   <polyline
