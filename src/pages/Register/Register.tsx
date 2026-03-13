@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from 'src/components/Input'
 import { schema, type Schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -7,11 +7,16 @@ import { useMutation } from '@tanstack/react-query'
 import { registerAccount } from 'src/api/auth.api'
 import { omit } from 'lodash'
 import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
-import type { ResponseApi } from 'src/types/utils.type'
+import type { ErrorResponse } from 'src/types/utils.type'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 
 type FormData = Schema
 
 export default function Register() {
+  const { setIsAuthenticated } = useContext(AppContext)
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -31,15 +36,16 @@ export default function Register() {
     const body = omit(data, ['confirm_password'])
     // Gọi registerAM.mutate để xử lí đăng kí.
     registerAccountMutation.mutate(body, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
+        setIsAuthenticated(true)
+        navigate('/')
       },
       onError: (error) => {
         // Bắt lỗi 422 từ server.
-        if (isAxiosUnprocessableEntityError<ResponseApi<Omit<FormData, 'confirm_password'>>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
           const formError = error.response?.data.data
-          if(formError) {
-            Object.keys(formError).forEach(key => {
+          if (formError) {
+            Object.keys(formError).forEach((key) => {
               setError(key as keyof Omit<FormData, 'confirm_password'>, {
                 message: formError[key as keyof Omit<FormData, 'confirm_password'>],
                 type: 'Server'
@@ -68,7 +74,7 @@ export default function Register() {
         <div className='grid grid-cols-1 lg:grid-cols-5 py-12 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='p-10 rounded bg-white shadow-sm' onSubmit={onSubmit} noValidate>
-              <div className='text-2xl'>Đăng Kí</div>
+              <div className='text-2xl'>Đăng Ký</div>
               <Input
                 name='email'
                 type='email'

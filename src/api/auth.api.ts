@@ -6,3 +6,6 @@ export const registerAccount = (body: { email: string; password: string }) => ht
 
 // Kết nối api login phần auth
 export const loginAccount = (body: { email: string; password: string }) => http.post<AuthResponse>('/login', body)
+
+// Đăng xuất auth
+export const logout = () => http.post('/logout')

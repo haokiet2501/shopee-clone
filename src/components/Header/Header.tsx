@@ -1,7 +1,22 @@
 import { Link } from 'react-router-dom'
 import Popover from '../Popover'
+import { useMutation } from '@tanstack/react-query'
+import { logout } from 'src/api/auth.api'
+import { useContext } from 'react'
+import { AppContext } from 'src/contexts/app.context'
 
 export default function Header() {
+  const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
+  const logoutMutation = useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      setIsAuthenticated(false)
+    }
+  })
+
+  const handleLogout = () => {
+    logoutMutation.mutate()
+  }
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white'>
       <div className='container px-4'>
@@ -43,17 +58,25 @@ export default function Header() {
               <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
             </svg>
           </Popover>
-          <Popover
+          {/* Đã login rồi thì sẽ hiện popover */}
+          {isAuthenticated && (
+             <Popover
             className='flex items-center py-1 hover:text-gray-300 cursor-pointer ml-6'
             renderPopover={
               <div className='bg-white relative shadow-sm w-37.5 rounded-xs border border-white text-sm'>
-                <Link to='/profile' className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                <Link
+                  to='/profile'
+                  className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                >
                   Tài khoản của tôi
                 </Link>
                 <Link to='/' className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
                   Đơn mua
                 </Link>
-                <button className='block w-full text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
+                <button
+                  onClick={handleLogout}
+                  className='block w-full text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                >
                   Đăng xuất
                 </button>
               </div>
@@ -68,6 +91,19 @@ export default function Header() {
             </div>
             <div>KDev</div>
           </Popover>
+          )}
+          {/* Nếu tài khoản đã logout thì sẽ hiện. */}
+          {!isAuthenticated && (
+            <div className='flex items-center'>
+              <Link to='/register' className='mx-3 capitalize hover:text-white/70'>
+                Đăng ký
+              </Link>
+              <div className="border-r border-r-white/40 h-4" />
+              <Link to='/login' className='mx-3 capitalize hover:text-white/70'>
+                Đăng nhập
+              </Link>
+            </div>
+          )}
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
           <Link to='/' className='col-span-2'>
@@ -189,9 +225,11 @@ export default function Header() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex mt-6 items-center justify-between">
-                      <div className="capitalize text-xs text-gray-500">Thêm hàng vào giỏ</div>
-                      <div className="button capitalize bg-orange-75 text-white px-4 py-2 hover:opacity-[.91] rounded-sm">Xem giỏ hàng</div>
+                    <div className='flex mt-6 items-center justify-between'>
+                      <div className='capitalize text-xs text-gray-500'>Thêm hàng vào giỏ</div>
+                      <div className='button capitalize bg-orange-75 text-white px-4 py-2 hover:opacity-[.91] rounded-sm'>
+                        Xem giỏ hàng
+                      </div>
                     </div>
                   </div>
                 </div>
