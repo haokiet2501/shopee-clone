@@ -62,37 +62,40 @@ export default function Header() {
           </Popover>
           {/* Đã login rồi thì sẽ hiện popover */}
           {isAuthenticated && (
-             <Popover
-            className='flex items-center py-1 hover:text-white/70 cursor-pointer ml-6'
-            renderPopover={
-              <div className='bg-white relative shadow-sm w-37.5 rounded-xs border border-white text-sm'>
-                <Link
-                  to='/profile'
-                  className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
-                >
-                  Tài khoản của tôi
-                </Link>
-                <Link to={path.home} className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'>
-                  Đơn mua
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className='block w-full text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
-                >
-                  Đăng xuất
-                </button>
+            <Popover
+              className='flex items-center py-1 hover:text-white/70 cursor-pointer ml-6'
+              renderPopover={
+                <div className='bg-white relative shadow-sm w-37.5 rounded-xs border border-white text-sm'>
+                  <Link
+                    to='/profile'
+                    className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                  >
+                    Tài khoản của tôi
+                  </Link>
+                  <Link
+                    to={path.home}
+                    className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                  >
+                    Đơn mua
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className='block w-full text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              }
+            >
+              <div className='w-5 h-5 mr-2 shrink-0'>
+                <img
+                  src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
+                  alt='avatar'
+                  className='w-full h-full object-cover rounded-full'
+                />
               </div>
-            }
-          >
-            <div className='w-5 h-5 mr-2 shrink-0'>
-              <img
-                src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
-                alt='avatar'
-                className='w-full h-full object-cover rounded-full'
-              />
-            </div>
-            <div>{profile?.email}</div>
-          </Popover>
+              <div>{profile?.email}</div>
+            </Popover>
           )}
           {/* Nếu tài khoản đã logout thì sẽ hiện. */}
           {!isAuthenticated && (
@@ -100,7 +103,7 @@ export default function Header() {
               <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
                 Đăng ký
               </Link>
-              <div className="border-r border-r-white/40 h-4" />
+              <div className='border-r border-r-white/40 h-4' />
               <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
                 Đăng nhập
               </Link>
@@ -109,7 +112,7 @@ export default function Header() {
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
           <Link to={path.home} className='col-span-2'>
-            <svg viewBox='0 0 192 65' className='h-9 lg:h-13'>
+            <svg viewBox='0 0 192 65' className='h-9 w-full lg:h-13'>
               <g fillRule='evenodd'>
                 <path
                   className='fill-white'
@@ -126,7 +129,7 @@ export default function Header() {
                 placeholder='FREESHIP ĐƠN TỪ 0Đ'
                 className='text-black px-3 py-2 grow border-none outline-none bg-transparent'
               />
-              <button className='rounded-sm py-2 px-6 shrink-0 bg-orange-75 hover:opacity-[.91]'>
+              <button className='rounded-sm py-2 px-6 shrink-0 bg-orange-75 hover:opacity-91'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -229,7 +232,7 @@ export default function Header() {
                     </div>
                     <div className='flex mt-6 items-center justify-between'>
                       <div className='capitalize text-xs text-gray-500'>Thêm hàng vào giỏ</div>
-                      <div className='button capitalize bg-orange-75 text-white px-4 py-2 hover:opacity-[.91] rounded-sm'>
+                      <div className='button capitalize bg-orange-75 text-white px-4 py-2 hover:opacity-91 rounded-sm'>
                         Xem giỏ hàng
                       </div>
                     </div>

@@ -91,7 +91,7 @@ export default function Login() {
               <div className='mt-3'>
                 <Button
                   type='submit'
-                  className='w-full py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91] flex justify-center items-center'
+                  className='w-full py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-91 flex justify-center items-center'
                   isLoading={loginAccountMutation.isPending}
                   disabled={!isValid || loginAccountMutation.isPending}
                 >

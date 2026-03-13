@@ -6,7 +6,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button(props: ButtonProps) {
   const { isLoading, disabled, className, children, ...rest } = props
-  const combinedClasses = [className, disabled ? 'cursor-not-allowed opacity-[.91]' : ''].filter(Boolean).join(' ')
+  const combinedClasses = [className, disabled ? 'cursor-not-allowed opacity-91' : ''].filter(Boolean).join(' ')
   return (
     <button className={combinedClasses} disabled={disabled || isLoading} {...rest}>
       {isLoading && (

@@ -113,7 +113,7 @@ export default function Register() {
               <div className='mt-2'>
                 <Button
                   type='submit'
-                  className='w-full flex justify-center items-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91]'
+                  className='w-full flex justify-center items-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-91'
                   isLoading={registerAccountMutation.isPending}
                   disabled={!isValid || registerAccountMutation.isPending}
                 >
