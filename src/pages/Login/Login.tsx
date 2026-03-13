@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginAccount } from 'src/api/auth.api'
+import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import { AppContext } from 'src/contexts/app.context'
 import type { ErrorResponse } from 'src/types/utils.type'
@@ -16,14 +17,19 @@ const loginSchema = schema.omit(['confirm_password'])
 export default function Login() {
   const { setIsAuthenticated } = useContext(AppContext)
   const navigate = useNavigate()
-  
+
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm<FormData>({
-    resolver: yupResolver(loginSchema)
+    resolver: yupResolver(loginSchema),
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: ''
+    }
   })
 
   // Gọi api để login.
@@ -81,12 +87,14 @@ export default function Login() {
                 errorMessage={errors.password?.message}
               />
               <div className='mt-3'>
-                <button
+                <Button
                   type='submit'
-                  className='w-full text-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91]'
+                  className='w-full py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91] flex justify-center items-center'
+                  isLoading={loginAccountMutation.isPending}
+                  disabled={!isValid || loginAccountMutation.isPending}
                 >
                   Đăng nhập
-                </button>
+                </Button>
               </div>
               <div className='flex items-center justify-center mt-8'>
                 <span className='text-gray-75 mr-1'>Bạn chưa có tài khoản?</span>

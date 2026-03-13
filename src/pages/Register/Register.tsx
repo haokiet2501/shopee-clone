@@ -10,6 +10,7 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import type { ErrorResponse } from 'src/types/utils.type'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.context'
+import Button from 'src/components/Button'
 
 type FormData = Schema
 
@@ -21,9 +22,15 @@ export default function Register() {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors, isValid }
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+      confirm_password: ''
+    }
   })
 
   // Gọi api để register.
@@ -102,12 +109,14 @@ export default function Register() {
                 errorMessage={errors.confirm_password?.message}
               />
               <div className='mt-2'>
-                <button
+                <Button
                   type='submit'
-                  className='w-full text-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91]'
+                  className='w-full flex justify-center items-center py-4 px-2 uppercase bg-orange-75 text-white text-sm hover:opacity-[.91]'
+                  isLoading={registerAccountMutation.isPending}
+                  disabled={!isValid || registerAccountMutation.isPending}
                 >
                   Đăng kí
-                </button>
+                </Button>
               </div>
               <div className='flex items-center justify-center mt-8'>
                 <span className='text-gray-75 mr-1'>Bạn đã có tài khoản?</span>
