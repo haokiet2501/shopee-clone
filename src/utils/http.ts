@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { HttpStatusCode } from 'src/constants/httpStatusCode.enum'
 import type { AuthResponse } from 'src/types/auth.type'
 import { clearLS, getAccessTokenFromLS, setAccessTokenToLS, setProfileToLS } from './auth'
-import path from 'src/contexts/path'
+import path from 'src/constants/path'
 
 // Tạo ra một http để dễ gọi API
 class Http {

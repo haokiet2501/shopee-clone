@@ -8,7 +8,7 @@ import Profile from './pages/Profile'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from './contexts/app.context'
-import path from './contexts/path'
+import path from './constants/path'
 
 const isAuthenticated = false
 
