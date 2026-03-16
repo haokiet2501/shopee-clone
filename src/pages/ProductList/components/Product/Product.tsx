@@ -1,28 +1,33 @@
 import { Link } from 'react-router-dom'
+import type { Product as ProductType } from 'src/types/product.type'
+import { formatCurrenCy, formatNumberToSocialStyle } from 'src/utils/utils'
+interface Props {
+  product: ProductType
+}
 
-export default function Product() {
+export default function Product({product}: Props) {
   return (
     <Link to='/'>
       <div className='bg-white shadow rounded-sm hover:-translate-y-px hover:shadow-md duration-100 transition-transform overflow-hidden'>
         <div className='w-full pt-(--my-padding) relative'>
           <img
-            src='https://down-vn.img.susercontent.com/file/sg-11134253-821ec-mgue86fauk9b2d_tn.webp'
-            alt='image'
+            src={product.image}
+            alt={product.name}
             className='absolute top-0 left-0 bg-white w-full h-full object-cover'
           />
         </div>
         <div className='p-2 overflow-hidden'>
           <div className='min-h-8 line-clamp-2 text-xs'>
-            Áo Thun cộc Tay Nam vải thun lạnh,họa tiết in chìm co giãn 4 chiều(xoắn)
+            {product.name}
           </div>
           <div className='flex items-center mt-3'>
             <div className='line-through max-w-[50%] text-gray-400 truncate'>
               <span className='text-xs'>₫</span>
-              <span>9000</span>
+              <span>{formatCurrenCy(product.price_before_discount)}</span>
             </div>
             <div className='text-orange-75 truncate ml-1'>
               <span className='text-xs'>₫</span>
-              <span>151.000</span>
+              <span>{formatCurrenCy(product.price)}</span>
             </div>
           </div>
         </div>
@@ -62,7 +67,7 @@ export default function Product() {
             </div>
           </div>
           <div className="ml-2 text-sm">
-            <span>5.66k</span>
+            <span>{formatNumberToSocialStyle(product.sold)}</span>
             <span className='ml-1'>Đã bán</span>
           </div>
         </div>
