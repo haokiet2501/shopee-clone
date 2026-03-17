@@ -6,7 +6,7 @@ interface Props {
   product: ProductType
 }
 
-export default function Product({product}: Props) {
+export default function Product({ product }: Props) {
   return (
     <Link to='/'>
       <div className='bg-white shadow rounded-sm hover:-translate-y-px hover:shadow-md duration-100 transition-transform overflow-hidden'>
@@ -18,9 +18,7 @@ export default function Product({product}: Props) {
           />
         </div>
         <div className='p-2 overflow-hidden'>
-          <div className='min-h-8 line-clamp-2 text-xs'>
-            {product.name}
-          </div>
+          <div className='min-h-8 line-clamp-2 text-xs'>{product.name}</div>
           <div className='flex items-center mt-3'>
             <div className='line-through max-w-[50%] text-gray-400 truncate'>
               <span className='text-xs'>₫</span>
@@ -33,8 +31,8 @@ export default function Product({product}: Props) {
           </div>
         </div>
         <div className='mt-3 flex items-center justify-end p-2'>
-          <ProductRating rating={product.rating}/>
-          <div className="ml-2 text-sm">
+          <ProductRating rating={product.rating} />
+          <div className='ml-2 text-sm'>
             <span>{formatNumberToSocialStyle(product.sold)}</span>
             <span className='ml-1'>Đã bán</span>
           </div>
