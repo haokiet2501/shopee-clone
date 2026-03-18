@@ -1,14 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import useQueryParams from "src/hooks/useQueryParams";
-import AsideFilter from "./components/AsideFilter";
-import Product from "./components/Product";
-import SortProductList from "./components/SortProductList";
-import productApi from "src/api/product.api";
-
+import { useQuery } from '@tanstack/react-query'
+import useQueryParams from 'src/hooks/useQueryParams'
+import AsideFilter from './components/AsideFilter'
+import Product from './components/Product'
+import SortProductList from './components/SortProductList'
+import productApi from 'src/api/product.api'
+import Pagination from 'src/components/Pagination'
+import { useState } from 'react'
 
 export default function ProductList() {
+  // Lấy param từ api
   const queryParams = useQueryParams()
-  const {data} = useQuery({
+  // Tạo state cho việc panigate
+  const [page, setPage] = useState(1)
+
+  // Lấy data từ api
+  const { data } = useQuery({
     queryKey: ['products', queryParams],
     queryFn: () => {
       return productApi.getProducts(queryParams)
@@ -25,12 +31,14 @@ export default function ProductList() {
           <div className='col-span-9'>
             <SortProductList />
             <div className='mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
-              {data && data.data.data.products.map((product) => (
-                <div className="col-span-1" key={product._id}>
-                  <Product product={product}/>
-                </div>
-              ))}
+              {data &&
+                data.data.data.products.map((product) => (
+                  <div className='col-span-1' key={product._id}>
+                    <Product product={product} />
+                  </div>
+                ))}
             </div>
+            <Pagination page={page} setPage={setPage} pageSize={20}/>
           </div>
         </div>
       </div>

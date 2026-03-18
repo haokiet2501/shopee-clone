@@ -10,7 +10,7 @@ export default defineConfig([
   {
     // Tắt cảnh báo đỏ khi variable chưa được sử dụng mà chỉ còn là hiện màu xanh.
     rules: {
-      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn'
     },
     files: ['**/*.{ts,tsx}'],
