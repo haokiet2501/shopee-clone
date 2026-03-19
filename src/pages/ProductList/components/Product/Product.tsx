@@ -22,11 +22,11 @@ export default function Product({ product }: Props) {
           <div className='flex items-center mt-3'>
             <div className='line-through max-w-[50%] text-gray-400 truncate'>
               <span className='text-xs'>₫</span>
-              <span>{formatCurrenCy(product.price_before_discount)}</span>
+              <span className='text-sm'>{formatCurrenCy(product.price_before_discount)}</span>
             </div>
             <div className='text-orange-75 truncate ml-1'>
               <span className='text-xs'>₫</span>
-              <span>{formatCurrenCy(product.price)}</span>
+              <span className='text-sm'>{formatCurrenCy(product.price)}</span>
             </div>
           </div>
         </div>

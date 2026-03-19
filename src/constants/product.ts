@@ -1,5 +1,5 @@
 export const sortBy = {
-  createAt: 'createAt',
+  createdAt: 'createdAt',
   view: 'view',
   sold: 'sold',
   price: 'price'
@@ -8,4 +8,4 @@ export const sortBy = {
 export const order = {
   asc: 'asc',
   desc: 'desc'
-} as const 
+} as const
