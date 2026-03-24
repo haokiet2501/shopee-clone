@@ -17,7 +17,7 @@ export function formatCurrenCy(currency: number) {
 }
 
 export function formatNumberToSocialStyle(value: number) {
-  if(value < 1000) {
+  if (value < 1000) {
     return value.toString()
   }
   return Intl.NumberFormat('en', {
@@ -28,3 +28,6 @@ export function formatNumberToSocialStyle(value: number) {
     .replace('.', ',')
     .toLowerCase()
 }
+
+// Tạo func mã giảm giá.
+export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'

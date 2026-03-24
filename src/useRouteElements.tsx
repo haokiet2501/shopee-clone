@@ -9,6 +9,7 @@ import { Navigate, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from './contexts/app.context'
 import path from './constants/path'
+import ProductDetail from './pages/ProductDetail'
 
 const isAuthenticated = false
 
@@ -35,7 +36,14 @@ export default function useRouteElements() {
         </MainLayout>
       )
     },
-
+    {
+      path: path.productDetail,
+      element: (
+        <MainLayout>
+          <ProductDetail />
+        </MainLayout>
+      )
+    },
     {
       path: '',
       element: <ProtectedRoute />,
