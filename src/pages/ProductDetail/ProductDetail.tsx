@@ -5,7 +5,7 @@ import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
 import { formatCurrenCy, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 export default function ProductDetail() {
   const { id } = useParams()
@@ -13,6 +13,7 @@ export default function ProductDetail() {
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
   })
+  const imageRef = useRef<HTMLImageElement>(null)
 
   // Tạo state image cho slide ảnh.
   const [currentIndexImage, setCurrentIndexImage] = useState([0, 5])
@@ -57,6 +58,39 @@ export default function ProductDetail() {
     setActiveImage(img)
   }
 
+  // Tạo hàm để thực hiện zoom ảnh.
+  const handleZoom = (event: React.MouseEvent<HTMLDivElement>) => {
+    // Lấy ra chiều cao chiều rộng của thẻ div bằng getBoudingClientReact.
+    const rect = event.currentTarget.getBoundingClientRect()
+    // Lấy giá trị từ useRef.
+    const image = imageRef.current as HTMLImageElement
+    const { naturalHeight, naturalWidth } = image
+    // Tính toán.
+    // Cách 1: lấy offsetX, offsetY khi chúng ta đã xử lí được bubble event.
+    const {offsetX, offsetY} = event.nativeEvent
+
+    // Cách 2: lấy offsetX, offsetY khi chúng ta không xử lí được bubble event. (bất chấp)
+    // Không cần pointer-event-none
+    // const offsetX = event.pageX - (rect.x + window.scrollX)
+    // const offsetY = event.pageY - (rect.y + window.scrollY)
+    const top = offsetY * (1 - naturalHeight / rect.height)
+    const left = offsetX * (1 - naturalWidth / rect.width)
+    // Xét giá trị width, height.
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
+    image.style.maxWidth = 'unset'
+    image.style.top = top + 'px'
+    image.style.left = left + 'px'
+
+    // Event bubble hiện tượng này xảy rả khi làm việc với event đặc biệt là zoom ảnh. 
+    // Là lúc thì cha lúc thì con có nghĩa là lúc thì nhầm lẫn thẻ này lúc thì thẻ kia.
+    // Cách để giải quyết vấn đề này là css cho nó pointer-event-none.
+  }
+
+  const handleRemoveZoom = () => {
+    imageRef.current?.removeAttribute('style')
+  }
+
   // Nếu không có data product thì trả về kq là null.
   if (!product) return null
 
@@ -66,11 +100,12 @@ export default function ProductDetail() {
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
-              <div className='relative w-full pt-[100%] shadow'>
+              <div className='relative w-full pt-[100%] shadow overflow-hidden cursor-zoom-in' onMouseMove={handleZoom} onMouseLeave={handleRemoveZoom}>
                 <img
+                  ref={imageRef}
                   src={displayImage}
                   alt={product.name}
-                  className='absolute top-0 left-0 h-full w-full bg-white object-cover'
+                  className='absolute top-0 pointer-events-none left-0 h-full w-full bg-white object-cover'
                 />
               </div>
               <div className='relative mt-4 grid grid-cols-5 gap-1'>
