@@ -1,6 +1,4 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { omitBy, isUndefined } from 'lodash'
-import useQueryParams from 'src/hooks/useQueryParams'
 import AsideFilter from './components/AsideFilter'
 import Product from './components/Product'
 import SortProductList from './components/SortProductList'
@@ -8,29 +6,11 @@ import productApi from 'src/api/product.api'
 import Pagination from 'src/components/Pagination'
 import type { ProductListConfig } from 'src/types/product.type'
 import categoryApi from 'src/api/category.api'
+import useQueryConfig from 'src/hooks/useQueryConfig'
 
-export type QueryConfig = {
-  [key in keyof ProductListConfig]: string
-}
 export default function ProductList() {
-  // Lấy param từ api
-  const queryParams = useQueryParams()
-  // Tạo variable để config từ param
-  const queryConfig: QueryConfig = omitBy(
-    {
-      exclude: queryParams.exclude,
-      limit: queryParams.limit || 20,
-      name: queryParams.name,
-      order: queryParams.order,
-      page: queryParams.page || '1',
-      price_max: queryParams.price_max,
-      price_min: queryParams.proce_min,
-      rating_filter: queryParams.rating_filter,
-      sort_by: queryParams.sort_by,
-      category: queryParams.category
-    },
-    isUndefined
-  )
+  // Lấy ra queryConfig từ custom hook.
+  const queryConfig = useQueryConfig()
 
   // Lấy data product từ api
   const { data: productsData } = useQuery({
