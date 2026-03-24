@@ -29,7 +29,7 @@ export default function ProductRating({ rating, activeClassname, nonActiveClassn
           return '0%'
         }
         return (
-          <div className='relative'>
+          <div className='relative' key={order}>
             <div className='absolute top-0 left-0 h-full overflow-hidden' style={{ width: handleWidth() }}>
               <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x={0} y={0} className={activeClassname}>
                 <polygon
