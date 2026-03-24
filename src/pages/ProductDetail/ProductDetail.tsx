@@ -3,12 +3,15 @@ import { useParams } from 'react-router-dom'
 import productApi from 'src/api/product.api'
 import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
-import { formatCurrenCy, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
+import { formatCurrenCy, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 export default function ProductDetail() {
-  const { id } = useParams()
+  // dot path break page vite. ở phiên bản cũ vite 2, hiện nay là vite 8 rồi.
+  // cách giải quyết là vite-plugin-rewrite-all
+  const { nameId } = useParams()
+  const id = getIdFromNameId(nameId as string)
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
     queryFn: () => productApi.getProductDetail(id as string)
@@ -67,7 +70,7 @@ export default function ProductDetail() {
     const { naturalHeight, naturalWidth } = image
     // Tính toán.
     // Cách 1: lấy offsetX, offsetY khi chúng ta đã xử lí được bubble event.
-    const {offsetX, offsetY} = event.nativeEvent
+    const { offsetX, offsetY } = event.nativeEvent
 
     // Cách 2: lấy offsetX, offsetY khi chúng ta không xử lí được bubble event. (bất chấp)
     // Không cần pointer-event-none
@@ -82,7 +85,7 @@ export default function ProductDetail() {
     image.style.top = top + 'px'
     image.style.left = left + 'px'
 
-    // Event bubble hiện tượng này xảy rả khi làm việc với event đặc biệt là zoom ảnh. 
+    // Event bubble hiện tượng này xảy rả khi làm việc với event đặc biệt là zoom ảnh.
     // Là lúc thì cha lúc thì con có nghĩa là lúc thì nhầm lẫn thẻ này lúc thì thẻ kia.
     // Cách để giải quyết vấn đề này là css cho nó pointer-event-none.
   }
@@ -100,7 +103,11 @@ export default function ProductDetail() {
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-9'>
             <div className='col-span-5'>
-              <div className='relative w-full pt-[100%] shadow overflow-hidden cursor-zoom-in' onMouseMove={handleZoom} onMouseLeave={handleRemoveZoom}>
+              <div
+                className='relative w-full pt-[100%] shadow overflow-hidden cursor-zoom-in'
+                onMouseMove={handleZoom}
+                onMouseLeave={handleRemoveZoom}
+              >
                 <img
                   ref={imageRef}
                   src={displayImage}

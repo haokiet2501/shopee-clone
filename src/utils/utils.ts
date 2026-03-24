@@ -31,3 +31,20 @@ export function formatNumberToSocialStyle(value: number) {
 
 // Tạo func mã giảm giá.
 export const rateSale = (original: number, sale: number) => Math.round(((original - sale) / original) * 100) + '%'
+
+// Tạo hàm xóa các ký tự đặc biệt trên bàn phím.
+export const removeSpecialCharacter = (str: string) =>
+  // eslint-disable-next-line no-useless-escape
+  str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
+
+// Tạo hàm để generateNameId trên trình duyệt.
+export const generateNameId = ({ name, id }: { name: string; id: string }) => {
+  return removeSpecialCharacter(name).replace(/\s/g, '-') + `-i.${id}`
+}
+
+// Tạo hàm lấy item cuối cùng của mảng.
+export const getIdFromNameId = (nameId: string) => {
+  const arr = nameId.split('-i.')
+  return arr[arr.length - 1]
+}
+
