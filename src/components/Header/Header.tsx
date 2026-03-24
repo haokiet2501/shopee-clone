@@ -2,7 +2,7 @@ import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import Popover from '../Popover'
 import { useMutation } from '@tanstack/react-query'
 import authApi from 'src/api/auth.api'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AppContext } from 'src/contexts/app.context'
 import path from 'src/constants/path'
 import useQueryConfig from 'src/hooks/useQueryConfig'
@@ -17,7 +17,7 @@ const schemaSearch = schema.pick(['name'])
 
 export default function Header() {
   const queryConfig = useQueryConfig()
-  const { register, handleSubmit } = useForm<FormData>({
+  const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
       name: ''
     },
@@ -44,6 +44,15 @@ export default function Header() {
     const finalConfig = queryConfig.order ? omit(config, ['order', 'sort_by']) : config
     navigate({ pathname: path.home, search: createSearchParams(finalConfig).toString() })
   })
+
+  const handleLogoClick = () => {
+    reset({ name: '' })
+    navigate(path.home)
+  }
+
+  useEffect(() => {
+    reset({ name: '' })
+  }, [reset])
 
   return (
     <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white'>
@@ -137,7 +146,7 @@ export default function Header() {
           )}
         </div>
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
-          <Link to={path.home} className='col-span-2'>
+          <Link to={path.home} className='col-span-2' onClick={handleLogoClick}>
             <svg viewBox='0 0 192 65' className='h-9 w-full lg:h-13'>
               <g fillRule='evenodd'>
                 <path
