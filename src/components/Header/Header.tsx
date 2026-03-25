@@ -1,6 +1,6 @@
 import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import Popover from '../Popover'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import authApi from 'src/api/auth.api'
 import { useContext, useEffect } from 'react'
 import { AppContext } from 'src/contexts/app.context'
@@ -10,10 +10,16 @@ import { useForm } from 'react-hook-form'
 import { schema, type Schema } from 'src/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
+import { purchasesStatus } from 'src/constants/purchase'
+import purchaseApi from 'src/api/purchase.api'
+import noProduct from 'src/assets/images/no-product.png'
+import { formatCurrenCy } from 'src/utils/utils'
 
 type FormData = Pick<Schema, 'name'>
-
 const schemaSearch = schema.pick(['name'])
+
+// Tạo constant để nếu có thêm hàng vào giỏ vượt quá 5 sp thì hiển thị đã thêm ... vào giỏ.
+const MAX_PURCHASE = 5
 
 export default function Header() {
   const queryConfig = useQueryConfig()
@@ -33,10 +39,23 @@ export default function Header() {
     }
   })
 
+  // Lưu ý là khi chuyển trang thì Headder chỉ bị re-render.
+  // Chứ không bị unmount - mounting again.
+  // * Tất nhiên là trừ trường hợp logout rồi nhảy sang RegisterLayout rồi nhảy vào lại.
+  // Nên các query này sẽ không bị inactive => Không bị gọi lại => không cần thiết phải set stale: Infinity
+  // Lấy dữ liệu khi đã add to cart
+  const { data: purchasesInCartData } = useQuery({
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
+  })
+  const purchasesData = purchasesInCartData?.data.data
+  console.log(purchasesData)
+
   const handleLogout = () => {
     logoutMutation.mutate()
   }
 
+  // Xử lí search
   const onSubmitSearch = handleSubmit((data) => {
     // gom data
     const config = { ...queryConfig, name: data.name }
@@ -55,16 +74,16 @@ export default function Header() {
   }, [reset])
 
   return (
-    <div className='pb-5 pt-2 bg-[linear-gradient(-180deg,#f53d2d,#f63)] text-white'>
+    <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pt-2 pb-5 text-white'>
       <div className='container px-4'>
         <div className='flex justify-end'>
           <Popover
-            className='flex items-center py-1 hover:text-white/70 cursor-pointer'
+            className='flex cursor-pointer items-center py-1 hover:text-white/70'
             renderPopover={
-              <div className='bg-white text-sm relative w-45 shadow-sm rounded-xs'>
+              <div className='relative w-45 rounded-xs bg-white text-sm shadow-sm'>
                 <div className='flex flex-col items-start p-[10px_16px_14px]'>
-                  <button className='pt-1.5 pb-1.5 hover:text-orange-75'>Tiếng Việt</button>
-                  <button className='pt-1.5 pb-1.5 hover:text-orange-75'>English</button>
+                  <button className='hover:text-orange-75 pt-1.5 pb-1.5'>Tiếng Việt</button>
+                  <button className='hover:text-orange-75 pt-1.5 pb-1.5'>English</button>
                 </div>
               </div>
             }
@@ -98,35 +117,35 @@ export default function Header() {
           {/* Đã login rồi thì sẽ hiện popover */}
           {isAuthenticated && (
             <Popover
-              className='flex items-center py-1 hover:text-white/70 cursor-pointer ml-6'
+              className='ml-6 flex cursor-pointer items-center py-1 hover:text-white/70'
               renderPopover={
-                <div className='bg-white relative shadow-sm w-37.5 rounded-xs border border-white text-sm'>
+                <div className='relative w-37.5 rounded-xs border border-white bg-white text-sm shadow-sm'>
                   <Link
                     to='/profile'
-                    className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                    className='block bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
                   >
                     Tài khoản của tôi
                   </Link>
                   <Link
                     to={path.home}
-                    className='block text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                    className='block bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
                   >
                     Đơn mua
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className='block w-full text-left py-2 px-3 hover:bg-slate-100 bg-white hover:text-cyan-500'
+                    className='block w-full bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
                   >
                     Đăng xuất
                   </button>
                 </div>
               }
             >
-              <div className='w-5 h-5 mr-2 shrink-0'>
+              <div className='mr-2 h-5 w-5 shrink-0'>
                 <img
                   src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
                   alt='avatar'
-                  className='w-full h-full object-cover rounded-full'
+                  className='h-full w-full rounded-full object-cover'
                 />
               </div>
               <div>{profile?.email}</div>
@@ -138,14 +157,14 @@ export default function Header() {
               <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
                 Đăng ký
               </Link>
-              <div className='border-r border-r-white/40 h-4' />
+              <div className='h-4 border-r border-r-white/40' />
               <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
                 Đăng nhập
               </Link>
             </div>
           )}
         </div>
-        <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
+        <div className='mt-4 grid grid-cols-12 items-end gap-4'>
           <Link to={path.home} className='col-span-2' onClick={handleLogoClick}>
             <svg viewBox='0 0 192 65' className='h-9 w-full lg:h-13'>
               <g fillRule='evenodd'>
@@ -157,15 +176,15 @@ export default function Header() {
             </svg>
           </Link>
           <form className='col-span-9' onSubmit={onSubmitSearch} noValidate>
-            <div className='bg-white rounded-sm p-1 flex'>
+            <div className='flex rounded-sm bg-white p-1'>
               <input
                 type='text'
                 placeholder='FREESHIP ĐƠN TỪ 0Đ'
                 autoComplete='off'
-                className='text-black px-3 py-2 grow border-none outline-none bg-transparent'
+                className='grow border-none bg-transparent px-3 py-2 text-black outline-none'
                 {...register('name')}
               />
-              <button className='rounded-sm py-2 px-6 shrink-0 bg-orange-75 hover:opacity-91'>
+              <button className='bg-orange-75 shrink-0 rounded-sm px-6 py-2 hover:opacity-91'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -186,98 +205,51 @@ export default function Header() {
           <div className='col-span-1 justify-self-end'>
             <Popover
               renderPopover={
-                <div className='bg-white relative shadow-md rounded-xs border border-white w-max max-w-[calc(100vw-32px)] sm:w-100 text-sm'>
-                  <div className='p-2'>
-                    <div className='text-gray-400 capitalize'>Sản phẩm mới thêm</div>
-                    <div className='mt-5'>
-                      <div className='mt-4 flex'>
-                        <div className='shrink-0'>
-                          <img
-                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
-                            alt='avatar'
-                            className='w-11 h-11 object-cover'
-                          />
-                        </div>
-                        <div className='grow ml-2 overflow-hidden'>
-                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
-                        </div>
-                        <div className='ml-2 shrink-0'>
-                          <span className='text-orange-75'>192.000₫</span>
-                        </div>
+                <div className='relative max-w-100 rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
+                  {purchasesData && purchasesData.length > 0 ? (
+                    <div className='p-2'>
+                      <div className='text-gray-400 capitalize'>Sản phẩm mới thêm</div>
+                      <div className='mt-5'>
+                        {purchasesData.slice(0, MAX_PURCHASE).map((purchase) => (
+                          <div className='mt-2 flex px-2 py-2 hover:bg-slate-100' key={purchase._id}>
+                            <div className='shrink-0'>
+                              <img
+                                src={purchase.product.image}
+                                alt={purchase.product.name}
+                                className='h-11 w-11 object-cover'
+                              />
+                            </div>
+                            <div className='ml-2 grow overflow-hidden'>
+                              <div className='truncate'>{purchase.product.name}</div>
+                            </div>
+                            <div className='ml-2 shrink-0'>
+                              <span className='text-orange-75'>₫{formatCurrenCy(purchase.product.price)}</span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <div className='mt-4 flex'>
-                        <div className='shrink-0'>
-                          <img
-                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
-                            alt='avatar'
-                            className='w-11 h-11 object-cover'
-                          />
+                      <div className='mt-6 flex items-center justify-between'>
+                        <div className='text-xs text-gray-500 capitalize'>
+                          {purchasesData.length > MAX_PURCHASE
+                            ? `${purchasesData.length - MAX_PURCHASE} Thêm hàng vào giỏ`
+                            : 'Thêm hàng vào giỏ'}
                         </div>
-                        <div className='grow ml-2 overflow-hidden'>
-                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
-                        </div>
-                        <div className='ml-2 shrink-0'>
-                          <span className='text-orange-75'>192.000₫</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='shrink-0'>
-                          <img
-                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
-                            alt='avatar'
-                            className='w-11 h-11 object-cover'
-                          />
-                        </div>
-                        <div className='grow ml-2 overflow-hidden'>
-                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
-                        </div>
-                        <div className='ml-2 shrink-0'>
-                          <span className='text-orange-75'>192.000₫</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='shrink-0'>
-                          <img
-                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
-                            alt='avatar'
-                            className='w-11 h-11 object-cover'
-                          />
-                        </div>
-                        <div className='grow ml-2 overflow-hidden'>
-                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
-                        </div>
-                        <div className='ml-2 shrink-0'>
-                          <span className='text-orange-75'>192.000₫</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='shrink-0'>
-                          <img
-                            src='https://images.unsplash.com/photo-1773118073884-632bf2c28076?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxOHx8fGVufDB8fHx8fA%3D%3D'
-                            alt='avatar'
-                            className='w-11 h-11 object-cover'
-                          />
-                        </div>
-                        <div className='grow ml-2 overflow-hidden'>
-                          <div className='truncate'>Gel mụn Dr.PONG 28H Whitening Drone Acne Clear Spot 10g</div>
-                        </div>
-                        <div className='ml-2 shrink-0'>
-                          <span className='text-orange-75'>192.000₫</span>
+                        <div className='button bg-orange-75 rounded-sm px-4 py-2 text-white capitalize hover:opacity-91'>
+                          Xem giỏ hàng
                         </div>
                       </div>
                     </div>
-                    <div className='flex mt-6 items-center justify-between'>
-                      <div className='capitalize text-xs text-gray-500'>Thêm hàng vào giỏ</div>
-                      <div className='button capitalize bg-orange-75 text-white px-4 py-2 hover:opacity-91 rounded-sm'>
-                        Xem giỏ hàng
-                      </div>
+                  ) : (
+                    <div className='flex h-75 w-75 flex-col items-center justify-center p-2'>
+                      <img src={noProduct} alt='no purchase' className='h-24 w-24' />
+                      <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                     </div>
-                  </div>
+                  )}
                 </div>
               }
             >
-              <Link to={path.home}>
-                <svg viewBox='0 0 26.6 25.6' className='w-6 h-6 lg:w-7 lg:h-7' stroke='white' fill='currentColor'>
+              <Link to={path.home} className='relative'>
+                <svg viewBox='0 0 26.6 25.6' className='h-6 w-6 lg:h-7 lg:w-7' stroke='white' fill='currentColor'>
                   <title>Shopping Cart Icon</title>
                   <polyline
                     fill='none'
@@ -290,6 +262,11 @@ export default function Header() {
                   <circle cx='10.7' cy={23} r='2.2' stroke='none' />
                   <circle cx='19.7' cy={23} r='2.2' stroke='none' />
                 </svg>
+                {purchasesData?.length && (
+                  <span className='absolute -top-2 left-4.25 rounded-full bg-white px-1.75 py-0.5 text-xs text-slate-400'>
+                    {purchasesData?.length}
+                  </span>
+                )}
               </Link>
             </Popover>
           </div>

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import productApi from 'src/api/product.api'
 import ProductRating from 'src/components/ProductRating'
@@ -6,8 +6,12 @@ import { formatCurrenCy, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/api/purchase.api'
+import { purchasesStatus } from 'src/constants/purchase'
+import { toast } from 'react-toastify'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
   const [buyCount, setBuyCount] = useState(1)
   // dot path break page vite. ở phiên bản cũ vite 2, hiện nay là vite 8 rồi.
   // cách giải quyết là vite-plugin-rewrite-all
@@ -15,9 +19,16 @@ export default function ProductDetail() {
   const id = getIdFromNameId(nameId as string)
   const { data: productDetailData } = useQuery({
     queryKey: ['product', id],
-    queryFn: () => productApi.getProductDetail(id as string)
+    queryFn: () => productApi.getProductDetail(id as string),
+    // staleTime: 3 * 60 * 1000,
+    enabled: !!id
   })
   const imageRef = useRef<HTMLImageElement>(null)
+
+  // Gọi api addToCard.
+  const addToCardMutation = useMutation({
+    mutationFn: purchaseApi.addToCart
+  })
 
   // Tạo state image cho slide ảnh.
   const [currentIndexImage, setCurrentIndexImage] = useState([0, 5])
@@ -98,6 +109,19 @@ export default function ProductDetail() {
   // Tạo hàm để xử lí buy count.
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
+  }
+
+  // Tạo hàm để thêm vào giỏ hàng
+  const addToCart = () => {
+    addToCardMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, {autoClose: 1000})
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+        }
+      }
+    )
   }
 
   // Nếu không có data product thì trả về kq là null.
@@ -205,7 +229,10 @@ export default function ProductDetail() {
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sẵn</div>
               </div>
               <div className='mt-8 flex items-center'>
-                <button className='flex h-12 items-center justify-center rounded-xs border border-orange-75 bg-orange-75/10 px-5 capitalize text-orange-75 shadow-sm hover:bg-orange-75/5'>
+                <button
+                  className='flex h-12 items-center justify-center rounded-xs border border-orange-75 bg-orange-75/10 px-5 capitalize text-orange-75 shadow-sm hover:bg-orange-75/5'
+                  onClick={addToCart}
+                >
                   <svg
                     enableBackground='new 0 0 15 15'
                     viewBox='0 0 15 15'
